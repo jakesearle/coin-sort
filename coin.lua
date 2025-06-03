@@ -1,3 +1,24 @@
+-- Bad Colors:
+-- 5 - Slot color
+-- 6 - Tray color
+-- 15 - Background Color
+
+-- Pairs:
+-- 0 & 7 - Black and white
+-- 1 & 12 - Navy and Blue
+-- 2 & 8 - Maroon & Red
+-- 3 & 11 - Forest & Lime
+-- 4 & 9 - Brown & Orange
+COLOR_PAIRS = {
+    { 8, 2 },
+    { 9, 4 },
+    { 10, 9 },
+    { 11, 3 },
+    { 12, 1 },
+    { 14, 2 },
+    { 7, 0 }
+}
+
 function make_coin(x, y, value)
     local coin = {
         value = value,
@@ -73,7 +94,28 @@ function make_coin(x, y, value)
 
     function coin:draw()
         if self.state == COIN_STATE.invisible then return end
-        spr(self.sprite, self.x, self.y)
+        local blank_spr = 9
+        local pallette_i = ((self.value - 1) % #COLOR_PAIRS) + 1
+        local should_flip = not is_even((self.value - 1) \ #COLOR_PAIRS)
+        local light, dark = COLOR_PAIRS[pallette_i][1], COLOR_PAIRS[pallette_i][2]
+
+        if should_flip then
+            light, dark = dark, light
+        end
+
+        pal(1, light)
+        pal(2, dark)
+        spr(blank_spr, self.x, self.y)
+        pal()
+
+        local n_digits = #tostr(abs(self.value))
+        if n_digits == 1 then
+            print(self.value, self.x + 3, self.y + 2, dark)
+        elseif n_digits == 2 then
+            local l, r = tostr(abs(self.value))[1], tostr(abs(self.value))[2]
+            print(l, self.x + 1, self.y + 2, dark)
+            print(r, self.x + 4, self.y + 2, dark)
+        end
     end
 
     function coin:start_hover(i)

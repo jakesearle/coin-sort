@@ -13,7 +13,7 @@ end
 
 function _draw()
     -- Background
-    cls(0)
+    cls(15)
     level:draw()
 end
 

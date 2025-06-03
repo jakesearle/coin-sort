@@ -2,11 +2,12 @@
 
 ### Next steps:
 
-- [ ] Programatically draw coins
 - [ ] Don't deal the biggest coins
 - [ ] Multiple rows
 - [ ] Game over screen
 - [ ] Home Screen
+
+- [X] Programatically draw coins
 
 ### Big ideas
 

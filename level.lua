@@ -83,7 +83,11 @@ function make_level(tray_values)
         end
 
         if btnp(🅾️) then
-            pq(self.trays[3].coins)
+            for t in all(self.trays) do
+                for c in all(t.coins) do
+                    c.value += #self.trays
+                end
+            end
         end
 
         self:update_children()
