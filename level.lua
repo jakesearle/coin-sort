@@ -280,6 +280,7 @@ function make_level(tray_values)
 
         tray:reset_hover_anim()
         self:recalc_is_hover()
+        self:recalc_active_buttons()
     end
 
     function level:pointed_tray()
@@ -313,6 +314,7 @@ function make_level(tray_values)
                 t:move_coins_up()
             end
         end
+        self:recalc_active_buttons()
     end
 
     function level:deal()
@@ -361,6 +363,7 @@ function make_level(tray_values)
         if n_coins_generated == 0 then
             self:deal()
         end
+        self:recalc_active_buttons()
     end
 
     function level:dealable_coins()
@@ -429,6 +432,22 @@ function make_level(tray_values)
             end
         end
         return min
+    end
+
+    function level:recalc_active_buttons()
+        local can_merge = false
+        for t in all(self.trays) do
+            if t.is_complete then
+                can_merge = true
+                break
+            end
+        end
+
+        for b in all(self.buttons) do
+            if b.button_type == LEVEL_CONFIG.BUTTON_TYPES.merge then
+                b.is_enabled = can_merge
+            end
+        end
     end
 
     return level

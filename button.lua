@@ -15,18 +15,20 @@ function make_button(x, y, button_type)
         w = LEVEL_CONFIG.BUTTON.width,
         color = color,
         text = text,
-        is_pressed = false
+        is_pressed = false,
+        is_enabled = true
     }
 
     function button:draw()
-        local shadow = get_shadow(self.color)
-        local highlight = get_highlight(self.color)
+        local body = self:get_body_color()
+        local shadow = self:get_shadow(self.color)
+        local highlight = self:get_highlight(self.color)
         if self.is_pressed then
             local tmp = shadow
             shadow = highlight
             highlight = tmp
         end
-        rectfill(self.x, self.y, self.x + self.w, self.y + self.h, color)
+        rectfill(self.x, self.y, self.x + self.w, self.y + self.h, body)
         -- Draw highlight
         line(self.x, self.y, self.x + self.w - 1, self.y, highlight)
         line(self.x, self.y, self.x, self.y + self.h - 1, highlight)
@@ -49,16 +51,21 @@ function make_button(x, y, button_type)
         self.is_pressed = false
     end
 
-    return button
-end
-
-function get_highlight(color)
-    if color == 11 or color == 12 then
-        return 7
+    function button:get_body_color()
+        if self.is_enabled then return self.color end
+        return 6
     end
-end
 
-function get_shadow(color)
-    if color == 12 then return 1 end
-    if color == 11 then return 3 end
+    function button:get_highlight(color)
+        if not self.is_enabled then return 5 end
+        if color == 11 or color == 12 then return 7 end
+    end
+
+    function button:get_shadow(color)
+        if not self.is_enabled then return 5 end
+        if color == 12 then return 1 end
+        if color == 11 then return 3 end
+    end
+
+    return button
 end
