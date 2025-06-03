@@ -354,22 +354,31 @@ function make_level(tray_values)
         local ccs = self:current_coins()
         local n_types = n_keys(ccs)
         local min_types = #self.trays - 1
-        if n_types >= min_types then return ccs end
+        -- if n_types >= min_types then return ccs end
 
         if n_types == 0 then
             local ret = {}
-            for i = 1, min_types do
-                ret[i] = 1
-            end
+            ret[1] = 0
             return ret
         end
 
+        -- Fill in missing values
+        -- If we've got a bunch of trays, but have missing values
+        -- ex: {10, 9, 7, 6}
+        -- This will add back in 8 (given that there's enough trays to do it)
+        -- If they player hasn't gotten rid of smaller values, that's a skill issue
         local top_val = self:largest_key(ccs)
         local bottom_val = max(1, top_val - min_types + 1)
         for i = top_val, bottom_val, -1 do
             if ccs[i] == nil then
                 ccs[i] = 1
             end
+        end
+
+        -- Don't coins of the highest value type
+        -- Gotta work for that
+        if n_types > 1 then
+            ccs[top_val] = nil
         end
         return ccs
     end
