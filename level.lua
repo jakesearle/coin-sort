@@ -71,6 +71,10 @@ function make_level(tray_values)
                 self:x_down()
             elseif btnr(❎) then
                 self:x_up()
+            elseif btnp(🅾️) then
+                self:merge_button_down()
+            elseif btnr(🅾️) then
+                self:merge_button_up()
             end
         elseif self.state == LEVEL_STATE.grabbing then
             if btnr(❎) then
@@ -79,14 +83,6 @@ function make_level(tray_values)
                 self:move_pointer(1)
             elseif btnp(⬅️) then
                 self:move_pointer(-1)
-            end
-        end
-
-        if btnp(🅾️) then
-            for t in all(self.trays) do
-                for c in all(t.coins) do
-                    c.value += #self.trays
-                end
             end
         end
 
@@ -219,6 +215,23 @@ function make_level(tray_values)
 
         self.pointer:grab(hovering_coins)
         self:pointed_tray():grab(hovering_coins)
+    end
+
+    function level:merge_button_down()
+        for b in all(self.buttons) do
+            if b.button_type == LEVEL_CONFIG.BUTTON_TYPES.merge then
+                b:press()
+            end
+        end
+    end
+
+    function level:merge_button_up()
+        for b in all(self.buttons) do
+            if b.button_type == LEVEL_CONFIG.BUTTON_TYPES.merge then
+                b:release()
+            end
+        end
+        self:merge()
     end
 
     function level:button_down()
@@ -377,7 +390,7 @@ function make_level(tray_values)
 
         -- Don't coins of the highest value type
         -- Gotta work for that
-        if n_types > 1 then
+        if n_keys(ccs) > 1 then
             ccs[top_val] = nil
         end
         return ccs

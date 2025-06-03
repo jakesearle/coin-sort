@@ -3,17 +3,12 @@ screenwidth = 127
 screenheight = 127
 
 level1 = {
+    { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
     {},
     {},
     {},
     {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
+    {}
 }
 
 LEVEL_STATE = {
@@ -31,7 +26,7 @@ LEVEL_CONFIG = {
     },
     BUTTON = {
         height = 10,
-        width = 30,
+        width = 40,
         margin = 5
     }
 }

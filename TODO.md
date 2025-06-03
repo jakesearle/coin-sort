@@ -1,14 +1,14 @@
-# TODO:
+# coin-sort
 
-### Next steps:
+## TODO
 
-- [ ] Don't deal the biggest coins
-- [ ] Multiple rows
+### Next steps
+
+- [ ] Visual disable for merge button
 - [ ] Game over screen
 - [ ] Home Screen
-- [ ] Make circle button merge
 - [ ] Score / High Score
-- [ ] Visual disable for merge button
+- [ ] Multiple rows
 
 ### Big ideas
 
@@ -19,10 +19,12 @@
 - [ ] Power-ups?
 - [ ] Toggle holding on the x button
 
-### Housekeeping:
+### Housekeeping
 
 - [ ] Standardize getters and setters
 
-### Done:
+### Done
 
+- [X] Don't deal the biggest coins
 - [X] Programatically draw coins
+- [X] Make circle button merge

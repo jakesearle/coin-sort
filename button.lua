@@ -2,7 +2,7 @@ function make_button(x, y, button_type)
     local color, text
     if button_type == LEVEL_CONFIG.BUTTON_TYPES.merge then
         color = 11
-        text = "merge"
+        text = "merge 🅾️"
     else
         color = 12
         text = "deal"
