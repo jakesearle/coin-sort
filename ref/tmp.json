@@ -1,0 +1,46 @@
+{vx=0,vy=0,y=48,draw=[function
+    ],x=59,ty=48,tx=59,t=648,update_moving=[function
+    ],update=[function
+    ],grab=[function
+    ],state=1,start_hover=[function
+    ],snap_xy=[function
+    ],release=[function
+    ],stop_hover=[function
+    ],value=4,sprite=4,base_y=48,
+} 
+
+
+{vx=0,vy=0,y=50,draw=[function
+    ],x=59,ty=50,tx=59,t=648,update_moving=[function
+    ],update=[function
+    ],grab=[function
+    ],state=1,start_hover=[function
+    ],snap_xy=[function
+    ],release=[function
+    ],stop_hover=[function
+    ],value=4,sprite=4,base_y=50,
+} 
+
+
+{vx=0,vy=0,y=49,draw=[function
+    ],x=63.632,ty=52,tx=59,t=69,update_moving=[function
+    ],update=[function
+    ],grab=[function
+    ],post_anim_state=1,state=2,start_hover=[function
+    ],snap_xy=[function
+    ],release=[function
+    ],stop_hover=[function
+    ],value=1,sprite=1,base_y=52,
+} 
+
+
+{vx=0,vy=0,y=52.0639,draw=[function
+    ],x=63.632,ty=54,tx=59,t=73,update_moving=[function
+    ],update=[function
+    ],grab=[function
+    ],post_anim_state=1,state=2,start_hover=[function
+    ],snap_xy=[function
+    ],release=[function
+    ],stop_hover=[function
+    ],value=1,sprite=1,base_y=54,
+}
