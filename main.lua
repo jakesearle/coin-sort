@@ -1,10 +1,3 @@
--- TODO:
--- [X] Animation on complete tray
--- [ ] Press button
--- [ ] Write "deal" - random {4, 3, 2, 0}
-
--- [ ] Standardize getters and setters
-
 function _init()
     printh("\nSTART:")
     frame = 0
