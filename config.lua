@@ -3,12 +3,15 @@ screenwidth = 127
 screenheight = 127
 
 level1 = {
-    { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-    {},
-    {},
-    {},
-    {},
-    {}
+    { 2, 2, 2, 2, 2, 2, 2, 2 },
+    { 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+}
+
+GAME_STATE = {
+    menu = 1,
+    level = 2,
+    game_over_countdown = 3,
+    game_over = 4
 }
 
 LEVEL_STATE = {
@@ -22,7 +25,9 @@ LEVEL_CONFIG = {
     n_merge_new = 2,
     BUTTON_TYPES = {
         deal = 1,
-        merge = 2
+        merge = 2,
+        restart = 3,
+        main_menu = 4
     },
     BUTTON = {
         height = 10,

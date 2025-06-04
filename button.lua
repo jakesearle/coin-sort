@@ -3,9 +3,15 @@ function make_button(x, y, button_type)
     if button_type == LEVEL_CONFIG.BUTTON_TYPES.merge then
         color = 11
         text = "merge 🅾️"
-    else
+    elseif button_type == LEVEL_CONFIG.BUTTON_TYPES.deal then
         color = 12
         text = "deal"
+    elseif button_type == LEVEL_CONFIG.BUTTON_TYPES.restart then
+        color = 11
+        text = "restart"
+    elseif button_type == LEVEL_CONFIG.BUTTON_TYPES.main_menu then
+        color = 12
+        text = "main menu"
     end
     button = {
         button_type = button_type,

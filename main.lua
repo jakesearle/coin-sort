@@ -1,20 +1,27 @@
+debug_slowdown = 1
+
 function _init()
     printh("\nSTART:")
     frame = 0
     prev_btn = 0
-    level = make_level(level1)
+    game = make_game()
 end
 
 function _update()
     frame += 1
-    level:update()
-    update_prev_btn()
+    if frame % debug_slowdown == 0 then
+        game:update()
+        update_prev_btn()
+    end
 end
 
 function _draw()
     -- Background
-    cls(15)
-    level:draw()
+    if frame % debug_slowdown == 0 then
+        cls(15)
+        game:draw()
+        -- big_print("text", 50, 50, 11)
+    end
 end
 
 function update_prev_btn()

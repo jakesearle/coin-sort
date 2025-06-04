@@ -8,24 +8,27 @@
 - [ ] Home Screen
 - [ ] Score / High Score
 - [ ] Multiple rows
-- [ ] (BUG) fix width on O char
+- [ ] (Enhance) Don't let merge be hoverable when disabled?
+
+### Housekeeping
+
+- [ ] Standardize getters and setters
+- [ ] Standardize public and private methods (add '_' prefix)
 
 ### Big ideas
 
+- [ ] Tutorial
 - [ ] Save state
 - [ ] Brainstorm name ideas
 - [ ] Music & Sound Design
 - [ ] Set levels
 - [ ] Power-ups?
 - [ ] Toggle holding on the x button
+- [ ] Screen shake
 
 ### Uncooked Ideas
 
 - [ ] Put a weight for coin values based on the number of pre-existing coins
-
-### Housekeeping
-
-- [ ] Standardize getters and setters
 
 ### Done
 
@@ -33,3 +36,4 @@
 - [X] Don't deal the biggest coins
 - [X] Programatically draw coins
 - [X] Make circle button merge
+- [X] (BUG) fix width on O char

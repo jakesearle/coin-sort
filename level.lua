@@ -90,8 +90,11 @@ function make_level(tray_values)
     end
 
     function level:draw()
+        local go = self:is_gameover()
         draw_all(self.trays)
-        draw_all(self.buttons)
+        if not go then
+            draw_all(self.buttons)
+        end
 
         -- Draw releasing coins on top
         for tray in all(self.trays) do
@@ -101,8 +104,9 @@ function make_level(tray_values)
                 end
             end
         end
-
-        self.pointer:draw()
+        if not go then
+            self.pointer:draw()
+        end
     end
 
     function level:update_children()
@@ -450,5 +454,19 @@ function make_level(tray_values)
         end
     end
 
+    function level:is_gameover()
+        for t in all(self.trays) do
+            if t.is_complete then
+                return false
+            end
+            if t:empty_slots() > 0 then
+                return false
+            end
+        end
+
+        return true
+    end
+
+    level:recalc_active_buttons()
     return level
 end
