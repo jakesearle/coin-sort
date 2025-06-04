@@ -4,8 +4,6 @@
 
 ### Next steps
 
-- [ ] Game over screen
-- [ ] Home Screen
 - [ ] Score / High Score
 - [ ] Multiple rows
 - [ ] (Enhance) Don't let merge be hoverable when disabled?
@@ -25,6 +23,7 @@
 - [ ] Power-ups?
 - [ ] Toggle holding on the x button
 - [ ] Screen shake
+- [ ] Pretty home screen
 
 ### Uncooked Ideas
 
@@ -37,3 +36,5 @@
 - [X] Programatically draw coins
 - [X] Make circle button merge
 - [X] (BUG) fix width on O char
+- [X] Game over screen
+- [X] Home Screen

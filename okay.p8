@@ -7,6 +7,7 @@ __lua__
 #include game.lua
 #include level.lua
 #include main.lua
+#include menu.lua
 #include popup.lua
 #include pointer.lua
 #include tray.lua
