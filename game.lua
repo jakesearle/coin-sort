@@ -1,7 +1,4 @@
-
-
 function make_game()
-
     local game = {
         f = 0,
         f_gameover = nil,

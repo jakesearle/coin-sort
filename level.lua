@@ -54,7 +54,9 @@ function make_level(tray_values)
         width = width,
         x = x,
         y = y,
-        state = LEVEL_STATE.hovering
+        state = LEVEL_STATE.hovering,
+        high_score = load_big_number(),
+        score = make_bigint(0)
     }
 
     function level:update()
@@ -96,6 +98,8 @@ function make_level(tray_values)
             draw_all(self.buttons)
         end
 
+        self:_draw_score()
+
         -- Draw releasing coins on top
         for tray in all(self.trays) do
             for c in all(tray.coins) do
@@ -107,6 +111,23 @@ function make_level(tray_values)
         if not go then
             self.pointer:draw()
         end
+    end
+
+    function level:_draw_score()
+        local score_label = "score"
+        local w, h = text_size(score_label)
+        local x = screenwidth - w + 1
+        local y = 1
+        print(score_label, x, y, 14)
+
+        local score_val = format_bigint(self.score)
+        y = y + h + 1
+        w, _ = text_size(score_val)
+        x = screenwidth - w + 1
+        print(score_val, x, y)
+
+        print("best", 1, 1)
+        print(format_bigint(self.high_score))
     end
 
     function level:update_children()
@@ -315,8 +336,19 @@ function make_level(tray_values)
     function level:merge()
         for t in all(self.trays) do
             if t.is_complete then
+                local big_i = make_bigint(t:get_last_val())
+                printh(big_i)
+                local sub_total = mult_bigint(big_i, big_i) .. "00"
+                printh(sub_total)
+                self.score = add_bigint(self.score, sub_total)
+
                 t:move_coins_up()
             end
+        end
+        if gt_bigint(self.score, self.high_score) then
+            self.high_score = self.score
+            load_big_number(self.high_score)
+            save_big_number(self.high_score)
         end
         self:recalc_active_buttons()
     end

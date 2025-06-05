@@ -134,9 +134,9 @@ function make_popup(title, main_menu_callback, restart_callback)
         -- Shadow
         squircle_fill(self.x + 4, self.y + 4, self.w, self.h, self.r_squircle, 0)
         -- Border
-        squircle_fill(self.x, self.y, self.w, self.h, self.r_squircle, 5)
+        squircle_fill(self.x, self.y, self.w, self.h, self.r_squircle, 2)
         -- Body
-        squircle_fill(self.x + 1, self.y + 1, self.w - 2, self.h - 2, self.r_squircle, 6)
+        squircle_fill(self.x + 1, self.y + 1, self.w - 2, self.h - 2, self.r_squircle, 15)
         self:_draw_header()
         -- draw_outline(self.button_container)
         self:_draw_buttons()
@@ -147,11 +147,11 @@ function make_popup(title, main_menu_callback, restart_callback)
 
     function popup:_draw_header()
         -- Header
-        squircle_fill(self.header.x, self.header.y, self.header.w, self.header.h, self.r_squircle, 5)
+        squircle_fill(self.header.x, self.header.y, self.header.w, self.header.h, self.r_squircle, 2)
         local t_text = "\^w\^t" .. self.title
         local text_w, _ = text_size(t_text)
         if self.header.w >= text_w then
-            print_centered(t_text, self.header.x, self.header.y + 1, self.header.w, self.header.h, 6)
+            print_centered(t_text, self.header.x, self.header.y + 1, self.header.w, self.header.h, 8)
         end
     end
 

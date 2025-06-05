@@ -197,6 +197,120 @@ function is_even(n)
     return n % 2 == 0
 end
 
+function make_bigint(num)
+    return tostr(num)
+end
+
+function add_bigint(a, b)
+    local result = ""
+    local carry = 0
+
+    local i = #a
+    local j = #b
+
+    while i > 0 or j > 0 or carry > 0 do
+        local digit_a = i > 0 and tonum(sub(a, i, i)) or 0
+        local digit_b = j > 0 and tonum(sub(b, j, j)) or 0
+
+        local sum = digit_a + digit_b + carry
+        carry = flr(sum / 10)
+        result = (sum % 10) .. result
+
+        i -= 1
+        j -= 1
+    end
+
+    return result
+end
+
+function mult_bigint(a, b)
+    local result = {}
+    local len_a = #a
+    local len_b = #b
+
+    -- Initialize result array
+    for i = 1, len_a + len_b do
+        result[i] = 0
+    end
+
+    -- Reverse loop through digits of a and b
+    for i = len_a, 1, -1 do
+        local digit_a = tonum(sub(a, i, i))
+        for j = len_b, 1, -1 do
+            local digit_b = tonum(sub(b, j, j))
+            local pos = i + j
+            result[pos] += digit_a * digit_b
+        end
+    end
+
+    -- Handle carries
+    for i = #result, 2, -1 do
+        local carry = flr(result[i] / 10)
+        result[i] %= 10
+        result[i - 1] += carry
+    end
+
+    -- Convert to string
+    local out = ""
+    local leading = true
+    for i = 1, #result do
+        if leading and result[i] == 0 then
+            -- skip leading zero
+        else
+            leading = false
+            out ..= result[i]
+        end
+    end
+
+    return out == "" and "0" or out
+end
+
+function format_bigint(n_str)
+    local suffixes = { "", "k", "m", "b", "t" }
+
+    -- remove leading zeros
+    while sub(n_str, 1, 1) == "0" and #n_str > 1 do
+        n_str = sub(n_str, 2)
+    end
+
+    local len = #n_str
+    local group = flr((len - 1) / 3)
+    local suffix = suffixes[group + 1] or ("e" .. (group * 3))
+
+    local digits = len - group * 3
+
+    local prefix = sub(n_str, 1, digits)
+    local decimal = sub(n_str, digits + 1, digits + 1)
+    if decimal != "" and decimal != "0" then
+        return prefix .. "." .. decimal .. suffix
+    else
+        return prefix .. suffix
+    end
+end
+
+function gt_bigint(a, b)
+    -- Compare by length first
+    if #a > #b then
+        return true
+    elseif #a < #b then
+        return false
+    end
+
+    -- Length is the same, compare digit by digit
+    for i = 1, #a do
+        local da = ord(sub(a, i, i))
+        local db = ord(sub(b, i, i))
+        if da > db then
+            return true
+        elseif da < db then
+            return false
+        end
+    end
+
+    -- Equal
+    return false
+end
+
 ------------
 -- RANDOM --
 ------------
@@ -211,6 +325,46 @@ function random_key(dict)
         add(keys, k)
     end
     return random_item(keys)
+end
+
+-------------
+-- STORAGE --
+-------------
+
+function save_big_number(s)
+    -- break into chunks of 4 digits from the back
+    local chunks = {}
+    while #s > 0 do
+        local chunk = sub(s, max(1, #s - 3), #s)
+        add(chunks, chunk)
+        s = sub(s, 1, #s - #chunk)
+    end
+
+    -- save each chunk into dset
+    for i, chunk in ipairs(chunks) do
+        printh(chunk)
+        dset(i, tonum(chunk))
+    end
+
+    -- optionally store how many chunks were saved
+    dset(0, #chunks)
+end
+
+function load_big_number()
+    local len = dget(0)
+    if len == 0 then return "0" end
+    local s = ""
+    for i = 1, len do
+        local chunk = tostr(flr(dget(i)))
+        -- Pad the chunk with leading zeros if needed
+        if i > 1 then
+            while #chunk < 4 do
+                chunk = "0" .. chunk
+            end
+        end
+        s = chunk .. s
+    end
+    return s
 end
 
 ----------
@@ -236,4 +390,20 @@ function text_size(text)
     local offscreen_offset = -100
     local x, y = print(text, 0, offscreen_offset)
     return x, y - offscreen_offset
+end
+
+function format_commas(n)
+    local s = "" .. n
+    local out = ""
+    local i = 0
+
+    for j = #s, 1, -1 do
+        i += 1
+        out = sub(s, j, j) .. out
+        if i % 3 == 0 and j > 1 then
+            out = "," .. out
+        end
+    end
+
+    return out
 end

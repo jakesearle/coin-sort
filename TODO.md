@@ -4,9 +4,7 @@
 
 ### Next steps
 
-- [ ] Score / High Score
 - [ ] Multiple rows
-- [ ] (Enhance) Don't let merge be hoverable when disabled?
 
 ### Housekeeping
 
@@ -16,7 +14,6 @@
 ### Big ideas
 
 - [ ] Tutorial
-- [ ] Save state
 - [ ] Brainstorm name ideas
 - [ ] Music & Sound Design
 - [ ] Set levels
@@ -24,6 +21,7 @@
 - [ ] Toggle holding on the x button
 - [ ] Screen shake
 - [ ] Pretty home screen
+- [ ] Feedback when pressing disabled button
 
 ### Uncooked Ideas
 
@@ -38,3 +36,5 @@
 - [X] (BUG) fix width on O char
 - [X] Game over screen
 - [X] Home Screen
+- [X] Score / High Score
+- [X] Save state

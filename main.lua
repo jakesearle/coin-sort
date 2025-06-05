@@ -1,5 +1,7 @@
 function _init()
     printh("\nSTART:")
+    cartdata("my_game_save")
+    -- save_big_number("0")
     frame = 0
     prev_btn = 0
     game = make_game()
