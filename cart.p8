@@ -1,17 +1,17 @@
 pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
-#include button.lua
-#include coin.lua
-#include config.lua
-#include game.lua
-#include level.lua
-#include main.lua
-#include menu.lua
-#include popup.lua
-#include pointer.lua
-#include tray.lua
-#include util.lua
+#include src/button.lua
+#include src/coin.lua
+#include src/config.lua
+#include src/game.lua
+#include src/level.lua
+#include src/main.lua
+#include src/menu.lua
+#include src/popup.lua
+#include src/pointer.lua
+#include src/tray.lua
+#include src/util.lua
 
 __gfx__
 0000000002222220044444400999999003333330011111100dddddd0088888800999999002222220000000000000000000000000000000000000000000000000
