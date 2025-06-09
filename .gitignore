@@ -89,4 +89,6 @@ Temporary Items
 # demos folder
 demos/
 
+build.p8
+
 # End of https://www.toptal.com/developers/gitignore/api/macos,pico8,lua
