@@ -89,11 +89,8 @@ function make_pointer(i, j, x, y)
     end
 
     function pointer:assert_valid()
-        if self.tray_i == nil and self.button_i == nil then
-            error("Both pointer i variables are unset")
-        elseif self.tray_i ~= nil and self.button_i ~= nil then
-            error("Both pointer i variables are set")
-        end
+        assert(self.tray_i ~= nil or self.button_i ~= nil, "Both pointer i variables are unset")
+        assert(self.tray_i == nil or self.button_i == nil, "Both pointer i variables are set")
     end
 
     function pointer:is_hovering_tray()

@@ -9,15 +9,11 @@
 - [ ] Standardize getters and setters
 - [ ] Standardize public and private methods (add '_' prefix)
 
-### Big ideas
+### To Complete
 
 - [ ] Use more coin colors
 - [ ] Background decor
-- [ ] Tutorial
-- [ ] Brainstorm name ideas
 - [ ] Music & Sound Design
-- [ ] Set levels
-- [ ] Power-ups?
 - [ ] Toggle holding on the x button
 - [ ] Screen shake
 - [ ] Pretty home screen
@@ -26,6 +22,13 @@
 - [ ] Put a weight for coin values based on the number of pre-existing coins
 - [ ] Save when you get a new coin
 - [ ] Unlockable trays
+
+### Big Ideas
+
+- [ ] Tutorial
+- [ ] Brainstorm name ideas
+- [ ] Set levels
+- [ ] Power-ups?
 
 ### Done
 

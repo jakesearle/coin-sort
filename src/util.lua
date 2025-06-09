@@ -209,10 +209,7 @@ end
 function average_y(list_of_coins)
     local total = 0
     local count = #list_of_coins
-
-    if count == 0 then
-        error("average_y: coin list is empty")
-    end
+    assert(count ~= 0, "average_y: coin list is empty")
 
     for coin in all(list_of_coins) do
         total += coin.y
