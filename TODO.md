@@ -4,7 +4,6 @@
 
 ### To do
 
-- [ ] (S) Reset high score menu item
 - [ ] (S) Use more coin colors
 - [ ] (S) Screen shake
 - [ ] (S) Round out buttons
@@ -28,6 +27,7 @@
 
 ### Done
 
+- [X] (S) Reset high score menu item
 - [X] Standardize getters and setters
 - [X] Standardize public and private methods (add '_' prefix)
 - [X] Visual disable for merge button

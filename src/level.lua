@@ -153,6 +153,10 @@ function make_level(tray_values)
         return true
     end
 
+    function level:fetch_highscore()
+        self.high_score = load_big_number()
+    end
+
     function level:_draw_score()
         local score_label = "score"
         local w, h = text_size(score_label)

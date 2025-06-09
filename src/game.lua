@@ -6,12 +6,16 @@ function make_game()
         children = {}
     }
 
-    function game:init()
+    function game:init_sysmenu()
         local menu_items = {
             {
                 text = "main menu",
                 callback = function() self:_start_menu() end
-            }
+            },
+            {
+                text = "reset high score",
+                callback = function() self:_reset_high_score() end
+            },
         }
         for i, mi in ipairs(menu_items) do
             menuitem(i, mi.text, mi.callback)
@@ -59,10 +63,17 @@ function make_game()
         add(self.children, make_popup("game over", f1, f2))
     end
 
+    function game:_reset_high_score()
+        save_big_number("0")
+        if self.state == GAME_STATE.level then
+            self.children[1]:fetch_highscore()
+        end
+    end
+
     function game:_start_restart()
         self:_start_level()
     end
 
-    game:init()
+    game:init_sysmenu()
     return game
 end
