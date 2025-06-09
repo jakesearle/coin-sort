@@ -906,9 +906,7 @@ function update_prev_btn()
     end
 end
 function make_menu(callback)
-    local menu = {
-
-    }
+    local menu = {}
 
     function menu:update()
         if btnp(❎) or btnp(🅾️) then
@@ -1735,6 +1733,10 @@ function load_big_number()
         end
         s = chunk .. s
     end
+
+    s = s:match("^0*(.-)$")
+    printh(s)
+    if s == "" then s = "0" end
     return s
 end
 

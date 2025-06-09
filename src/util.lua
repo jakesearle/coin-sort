@@ -82,6 +82,38 @@ function split_list(list, first_len)
     return first, second
 end
 
+function split_into_parts(list, n)
+    local parts = {}
+    local total = #list
+    local size = ceil(total / n)
+
+    for i = 1, total, size do
+        local part = {}
+        for j = i, min(i + size - 1, total) do
+            add(part, list[j])
+        end
+        add(parts, part)
+    end
+
+    return parts
+end
+
+function flatten(tbl)
+    local flat = {}
+    for _, sub in ipairs(tbl) do
+        for _, val in ipairs(sub) do
+            add(flat, val)
+        end
+    end
+    return flat
+end
+
+function extend(a, b)
+    for _, v in ipairs(b) do
+        add(a, v)
+    end
+end
+
 -------------
 -- LOGGING --
 -------------
@@ -342,7 +374,6 @@ function save_big_number(s)
 
     -- save each chunk into dset
     for i, chunk in ipairs(chunks) do
-        printh(chunk)
         dset(i, tonum(chunk))
     end
 
@@ -364,6 +395,16 @@ function load_big_number()
         end
         s = chunk .. s
     end
+    s = remove_leading_zeros(s)
+    return s
+end
+
+function remove_leading_zeros(s)
+    local i = 1
+    while s[i] == "0" and i < #s do
+        i += 1
+    end
+    s = sub(s, i)
     return s
 end
 

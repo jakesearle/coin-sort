@@ -4,8 +4,6 @@
 
 ### Next steps
 
-- [ ] Multiple rows
-
 ### Housekeeping
 
 - [ ] Standardize getters and setters
@@ -13,6 +11,8 @@
 
 ### Big ideas
 
+- [ ] Use more coin colors
+- [ ] Background decor
 - [ ] Tutorial
 - [ ] Brainstorm name ideas
 - [ ] Music & Sound Design
@@ -22,10 +22,10 @@
 - [ ] Screen shake
 - [ ] Pretty home screen
 - [ ] Feedback when pressing disabled button
-
-### Uncooked Ideas
-
+- [ ] Round out buttons
 - [ ] Put a weight for coin values based on the number of pre-existing coins
+- [ ] Save when you get a new coin
+- [ ] Unlockable trays
 
 ### Done
 
@@ -38,3 +38,4 @@
 - [X] Home Screen
 - [X] Score / High Score
 - [X] Save state
+- [X] Multiple rows

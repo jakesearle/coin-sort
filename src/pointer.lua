@@ -1,9 +1,8 @@
-function make_pointer(i, x, y)
+function make_pointer(i, j, x, y)
     pointer = {
         tray_i = i, -- which tray I'm pointing to
+        tray_j = j,
         button_i = nil, -- which button I'm pointing to
-        prev_tray_i = nil,
-        prev_button_i = nil,
         x = x,
         y = y,
         tx = x,
@@ -45,24 +44,24 @@ function make_pointer(i, x, y)
         spr(self.sprite, self.x, self.y)
     end
 
-    function pointer:move_to_tray(i, nx, ny)
+    function pointer:move_to_tray(i, j, nx, ny)
         self.tray_i = i
-        self.prev_button_i = self.button_i
+        self.tray_j = j
         self.button_i = nil
         self.tx = nx
         self.ty = ny
     end
 
     function pointer:move_to_button(i, nx, ny)
-        self.prev_tray_i = self.tray_i
         self.tray_i = nil
+        self.tray_j = nil
         self.button_i = i
         self.tx = nx
         self.ty = ny
     end
 
     function pointer:grab(coins)
-        self.coins_from = self.tray_i
+        self.coins_from = { self.tray_i, self.tray_j }
         self.held_coins = coins
         local x, y = self:grab_point()
         for c in all(self.held_coins) do

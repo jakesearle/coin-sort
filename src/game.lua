@@ -51,11 +51,12 @@ function make_game()
     end
 
     function game:start_gameover()
+        -- printh("here")
         self.state = GAME_STATE.game_over
         local f1 = function() self:start_menu() end
         local f2 = function() self:start_restart() end
 
-        self.children = { make_popup("game over", f1, f2) }
+        add(self.children, make_popup("game over", f1, f2))
     end
 
     function game:start_restart()

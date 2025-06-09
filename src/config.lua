@@ -3,6 +3,13 @@ screenwidth = 127
 screenheight = 127
 
 level1 = {
+    { 20, 20, 20, 20, 20, 20, 20, 20, 20, 20 },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
     {},
     {},
     {},
@@ -28,9 +35,12 @@ LEVEL_STATE = {
 }
 
 LEVEL_CONFIG = {
-    button_area_height = 32,
+    button_area_height = 16,
     n_to_deal = { 4, 3, 2, 0 },
     n_merge_new = 2,
+    max_tray_rows = 3,
+    max_tray_cols = 10,
+    score_area_height = 13,
     BUTTON_TYPES = {
         deal = 1,
         merge = 2,

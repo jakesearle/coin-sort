@@ -35,7 +35,7 @@ function make_popup(title, main_menu_callback, restart_callback)
             if finished then
                 button_i = 2
                 local x, y = self.buttons[button_i]:get_pointer_xy()
-                self.pointer = make_pointer(nil, x, y)
+                self.pointer = make_pointer(nil, nil, x, y)
                 self.pointer.button_i = button_i
             end
         end
@@ -138,7 +138,6 @@ function make_popup(title, main_menu_callback, restart_callback)
         -- Body
         squircle_fill(self.x + 1, self.y + 1, self.w - 2, self.h - 2, self.r_squircle, 15)
         self:_draw_header()
-        -- draw_outline(self.button_container)
         self:_draw_buttons()
         if self.pointer then
             self.pointer:draw()
