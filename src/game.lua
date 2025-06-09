@@ -51,7 +51,6 @@ function make_game()
     end
 
     function game:start_gameover()
-        -- printh("here")
         self.state = GAME_STATE.game_over
         local f1 = function() self:start_menu() end
         local f2 = function() self:start_restart() end
