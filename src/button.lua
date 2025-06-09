@@ -26,9 +26,9 @@ function make_button(x, y, button_type)
     }
 
     function button:draw()
-        local body = self:get_body_color()
-        local shadow = self:get_shadow(self.color)
-        local highlight = self:get_highlight(self.color)
+        local body = self:_get_body_color()
+        local shadow = self:_get_shadow(self.color)
+        local highlight = self:_get_highlight(self.color)
         if self.is_pressed then
             local tmp = shadow
             shadow = highlight
@@ -45,10 +45,6 @@ function make_button(x, y, button_type)
         print_centered(self.text, self.x + 1, self.y + 1, self.w, self.h, shadow)
     end
 
-    function button:get_pointer_xy()
-        return self.x + (self.w \ 2), self.y - 5
-    end
-
     function button:press()
         self.is_pressed = true
     end
@@ -57,17 +53,21 @@ function make_button(x, y, button_type)
         self.is_pressed = false
     end
 
-    function button:get_body_color()
+    function button:get_pointer_xy()
+        return self.x + (self.w \ 2), self.y - 5
+    end
+
+    function button:_get_body_color()
         if self.is_enabled then return self.color end
         return 6
     end
 
-    function button:get_highlight(color)
+    function button:_get_highlight(color)
         if not self.is_enabled then return 5 end
         if color == 11 or color == 12 then return 7 end
     end
 
-    function button:get_shadow(color)
+    function button:_get_shadow(color)
         if not self.is_enabled then return 5 end
         if color == 12 then return 1 end
         if color == 11 then return 3 end

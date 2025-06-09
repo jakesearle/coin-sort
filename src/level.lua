@@ -1,7 +1,7 @@
 function make_level(tray_values)
     local level = {
         pointer = pointer,
-        buttons = buttons,
+        buttons = nil,
         state = LEVEL_STATE.hovering,
         high_score = load_big_number(),
         score = make_bigint(0)
@@ -66,6 +66,9 @@ function make_level(tray_values)
             local b = make_button(b_x, b_y, t)
             add(self.buttons, b)
         end
+
+        self:_recalc_active_buttons()
+        self:_recalc_is_hover()
     end
 
     function level:update()
@@ -77,17 +80,17 @@ function make_level(tray_values)
             if btnp(⬇️) then dy += 1 end
 
             if dx ~= 0 or dy ~= 0 then
-                self:move_pointer(dx, dy)
+                self:_move_pointer(dx, dy)
             end
 
             if btnp(❎) then
-                self:x_down()
+                self:_x_down()
             elseif btnr(❎) then
-                self:x_up()
+                self:_x_up()
             elseif btnp(🅾️) then
-                self:merge_button_down()
+                self:_merge_button_down()
             elseif btnr(🅾️) then
-                self:merge_button_up()
+                self:_merge_button_up()
             end
         elseif self.state == LEVEL_STATE.grabbing then
             local dx, dy = 0, 0
@@ -97,15 +100,15 @@ function make_level(tray_values)
             if btnp(⬇️) then dy += 1 end
 
             if dx ~= 0 or dy ~= 0 then
-                self:move_pointer(dx, dy)
+                self:_move_pointer(dx, dy)
             end
 
             if btnr(❎) then
-                self:release_chips()
+                self:_release_chips()
             end
         end
 
-        self:update_children()
+        self:_update_children()
     end
 
     function level:draw()
@@ -135,6 +138,21 @@ function make_level(tray_values)
         end
     end
 
+    function level:is_gameover()
+        for row in all(self.tray_grid) do
+            for t in all(row) do
+                if t.is_complete then
+                    return false
+                end
+                if t:empty_slots() > 0 then
+                    return false
+                end
+            end
+        end
+
+        return true
+    end
+
     function level:_draw_score()
         local score_label = "score"
         local w, h = text_size(score_label)
@@ -152,7 +170,7 @@ function make_level(tray_values)
         print(format_bigint(self.high_score))
     end
 
-    function level:update_children()
+    function level:_update_children()
         -- update children
         for row in all(self.tray_grid) do
             for tray in all(row) do
@@ -162,13 +180,13 @@ function make_level(tray_values)
         self.pointer:update()
     end
 
-    function level:move_pointer(dx, dy)
-        local current_item = self:pointed_button() or self:pointed_tray()
+    function level:_move_pointer(dx, dy)
+        local current_item = self:_pointed_button() or self:_pointed_tray()
         local all_items = flatten(self.tray_grid)
         if self.state ~= LEVEL_STATE.grabbing then
             extend(all_items, self.buttons)
         end
-        local best_item = self:find_item_in_direction(current_item, all_items, dx, dy)
+        local best_item = self:_find_item_in_direction(current_item, all_items, dx, dy)
 
         for i, row in ipairs(self.tray_grid) do
             for j, tray in ipairs(row) do
@@ -186,35 +204,35 @@ function make_level(tray_values)
             end
         end
 
-        self:recalc_active_buttons()
-        self:recalc_pressed_buttons()
-        self:recalc_is_hover()
+        self:_recalc_active_buttons()
+        self:_recalc_pressed_buttons()
+        self:_recalc_is_hover()
     end
 
-    function level:x_down()
+    function level:_x_down()
         if self.pointer:is_hovering_button() then
-            self:button_down()
+            self:_button_down()
         elseif self.pointer:is_hovering_tray() then
-            self:grab_chips()
+            self:_grab_chips()
         end
     end
 
-    function level:x_up()
+    function level:_x_up()
         if self.pointer:is_hovering_button() then
-            self:button_up()
+            self:_button_up()
         end
     end
 
-    function level:grab_chips()
-        if #self:pointed_tray().coins < 1 then return end
+    function level:_grab_chips()
+        if #self:_pointed_tray().coins < 1 then return end
         self.state = LEVEL_STATE.grabbing
-        local hovering_coins = self:pointed_tray():get_last_group()
+        local hovering_coins = self:_pointed_tray():get_last_group()
 
         self.pointer:grab(hovering_coins)
-        self:pointed_tray():grab(hovering_coins)
+        self:_pointed_tray():grab(hovering_coins)
     end
 
-    function level:merge_button_down()
+    function level:_merge_button_down()
         for b in all(self.buttons) do
             if b.button_type == LEVEL_CONFIG.BUTTON_TYPES.merge then
                 b:press()
@@ -222,34 +240,34 @@ function make_level(tray_values)
         end
     end
 
-    function level:merge_button_up()
+    function level:_merge_button_up()
         for b in all(self.buttons) do
             if b.button_type == LEVEL_CONFIG.BUTTON_TYPES.merge then
                 b:release()
             end
         end
-        self:merge()
+        self:_merge()
     end
 
-    function level:button_down()
-        self:pointed_button():press()
+    function level:_button_down()
+        self:_pointed_button():press()
     end
 
-    function level:button_up()
-        self:pointed_button():release()
-        if not self:pointed_button().is_enabled then
+    function level:_button_up()
+        self:_pointed_button():release()
+        if not self:_pointed_button().is_enabled then
             return
         end
-        if self:pointed_button().button_type == LEVEL_CONFIG.BUTTON_TYPES.merge then
-            self:merge()
-        elseif self:pointed_button().button_type == LEVEL_CONFIG.BUTTON_TYPES.deal then
-            self:deal()
+        if self:_pointed_button().button_type == LEVEL_CONFIG.BUTTON_TYPES.merge then
+            self:_merge()
+        elseif self:_pointed_button().button_type == LEVEL_CONFIG.BUTTON_TYPES.deal then
+            self:_deal()
         end
     end
 
-    function level:release_chips()
+    function level:_release_chips()
         local pointer = self.pointer
-        local tray = self:pointed_tray()
+        local tray = self:_pointed_tray()
         local from_i, from_j = unpack(self.pointer.coins_from)
         local tray_from = self.tray_grid[from_i][from_j]
         local held_val = pointer:held_val()
@@ -281,11 +299,11 @@ function make_level(tray_values)
         end
 
         tray:reset_hover_anim()
-        self:recalc_is_hover()
-        self:recalc_active_buttons()
+        self:_recalc_is_hover()
+        self:_recalc_active_buttons()
     end
 
-    function level:pointed_tray()
+    function level:_pointed_tray()
         if self.tray_grid == nil
                 or self.pointer.tray_i == nil
                 or self.pointer.tray_i == nil
@@ -295,12 +313,12 @@ function make_level(tray_values)
         return self.tray_grid[self.pointer.tray_i][self.pointer.tray_j]
     end
 
-    function level:pointed_button()
+    function level:_pointed_button()
         if not self.buttons then return nil end
         return self.buttons[self.pointer.button_i]
     end
 
-    function level:recalc_is_hover()
+    function level:_recalc_is_hover()
         -- Set all to none
         for r in all(self.tray_grid) do
             for t in all(r) do
@@ -312,8 +330,8 @@ function make_level(tray_values)
             end
         end
         -- Set hovering
-        if self:pointed_tray() ~= nil then
-            for i, c in ipairs(self:pointed_tray():get_last_group()) do
+        if self:_pointed_tray() ~= nil then
+            for i, c in ipairs(self:_pointed_tray():get_last_group()) do
                 if c.state == COIN_STATE.idle then
                     c:start_hover(i)
                 end
@@ -321,7 +339,7 @@ function make_level(tray_values)
         end
     end
 
-    function level:merge()
+    function level:_merge()
         for t in all(flatten(self.tray_grid)) do
             if t.is_complete then
                 local big_i = make_bigint(t:get_last_val())
@@ -336,15 +354,15 @@ function make_level(tray_values)
             load_big_number(self.high_score)
             save_big_number(self.high_score)
         end
-        self:recalc_active_buttons()
+        self:_recalc_active_buttons()
     end
 
-    function level:deal()
-        local dealable = self:dealable_coins()
-        local smallest_coin = self:smallest_key(dealable)
+    function level:_deal()
+        local dealable = self:_dealable_coins()
+        local smallest_coin = self:_smallest_key(dealable)
         local n_smallest = dealable[smallest_coin]
         local max_smallest_to_deal = nil
-        local start_x, start_y = self:pointed_button():get_pointer_xy()
+        local start_x, start_y = self:_pointed_button():get_pointer_xy()
         local n_coins_generated = 0
 
         if #dealable >= #self.tray_grid and (n_smallest % TRAY_CONFIG.n_slots) == 0 then
@@ -371,7 +389,7 @@ function make_level(tray_values)
                 end
             end
             if actual_to_deal ~= 0 then
-                -- we want to actually deal coins
+                -- we want to actually _deal coins
                 -- normal generate
                 local new_coins = {}
                 for i = 1, actual_to_deal do
@@ -383,13 +401,13 @@ function make_level(tray_values)
         end
 
         if n_coins_generated == 0 then
-            self:deal()
+            self:_deal()
         end
-        self:recalc_active_buttons()
+        self:_recalc_active_buttons()
     end
 
-    function level:dealable_coins()
-        local ccs = self:current_coins()
+    function level:_dealable_coins()
+        local ccs = self:_current_coins()
         local n_types = n_keys(ccs)
         local min_types = #flatten(self.tray_grid) - 1
         -- if n_types >= min_types then return ccs end
@@ -405,7 +423,7 @@ function make_level(tray_values)
         -- ex: {10, 9, 7, 6}
         -- This will add back in 8 (given that there's enough trays to do it)
         -- If they player hasn't gotten rid of smaller values, that's a skill issue
-        local top_val = self:largest_key(ccs)
+        local top_val = self:_largest_key(ccs)
         local bottom_val = max(1, top_val - min_types + 1)
         for i = top_val, bottom_val, -1 do
             if ccs[i] == nil then
@@ -421,7 +439,7 @@ function make_level(tray_values)
         return ccs
     end
 
-    function level:current_coins()
+    function level:_current_coins()
         local seen = {}
         for row in all(self.tray_grid) do
             for tray in all(row) do
@@ -438,7 +456,7 @@ function make_level(tray_values)
         return seen
     end
 
-    function level:smallest_key(coins)
+    function level:_smallest_key(coins)
         local min = nil
         for k, _ in pairs(coins) do
             if min == nil or k < min then
@@ -448,7 +466,7 @@ function make_level(tray_values)
         return min
     end
 
-    function level:largest_key(coins)
+    function level:_largest_key(coins)
         local min = nil
         for k, _ in pairs(coins) do
             if min == nil or k > min then
@@ -458,7 +476,7 @@ function make_level(tray_values)
         return min
     end
 
-    function level:recalc_active_buttons()
+    function level:_recalc_active_buttons()
         local can_merge = false
         local can_deal = false
         for t in all(flatten(self.tray_grid)) do
@@ -481,33 +499,18 @@ function make_level(tray_values)
         end
     end
 
-    function level:recalc_pressed_buttons()
+    function level:_recalc_pressed_buttons()
         for b in all(self.buttons) do
             b:release()
         end
-        if self:pointed_button() and btn(❎) then
-            self:pointed_button():press()
+        if self:_pointed_button() and btn(❎) then
+            self:_pointed_button():press()
         end
     end
 
-    function level:is_gameover()
-        for row in all(self.tray_grid) do
-            for t in all(row) do
-                if t.is_complete then
-                    return false
-                end
-                if t:empty_slots() > 0 then
-                    return false
-                end
-            end
-        end
-
-        return true
-    end
-
-    function level:find_item_in_direction(curr_item, items, dx, dy)
+    function level:_find_item_in_direction(curr_item, items, dx, dy)
         local cx, cy = curr_item.x + curr_item.w / 2, curr_item.y + curr_item.h / 2
-        local target = self:search(curr_item, cx, cy, items, dx, dy)
+        local target = self:_search(curr_item, cx, cy, items, dx, dy)
         if target then
             return target
         end
@@ -522,10 +525,10 @@ function make_level(tray_values)
             wrap_py = (dy > 0) and 0 or screenheight
         end
 
-        return self:search(curr_item, wrap_px, wrap_py, items, dx, dy)
+        return self:_search(curr_item, wrap_px, wrap_py, items, dx, dy)
     end
 
-    function level:search(curr_item, cx, cy, items, dx, dy)
+    function level:_search(curr_item, cx, cy, items, dx, dy)
         local best_button = nil
         local best_score = nil
 
@@ -560,7 +563,5 @@ function make_level(tray_values)
     end
 
     level:init()
-    level:recalc_active_buttons()
-    level:recalc_is_hover()
     return level
 end

@@ -13,12 +13,12 @@ function make_tray(x, y, coin_values)
     function tray:init_coins(coin_values)
         local coins = {}
         for i, val in ipairs(coin_values) do
-            local x, y = self:xy_for_slot(i)
+            local x, y = self:_xy_for_slot(i)
             local coin = make_coin(x, y, val)
             add(coins, coin)
         end
         self.coins = coins
-        self:calc_is_complete()
+        self:_calc_is_complete()
     end
 
     function tray:update()
@@ -84,7 +84,7 @@ function make_tray(x, y, coin_values)
 
     function tray:grab(grabbed_coins)
         remove_items(self.coins, grabbed_coins)
-        self:calc_is_complete()
+        self:_calc_is_complete()
     end
 
     function tray:empty_slots()
@@ -95,15 +95,11 @@ function make_tray(x, y, coin_values)
         local starting_i = #self.coins
         for i, c in ipairs(dropped_coins) do
             -- add the data
-            local x, y = self:xy_for_slot(starting_i + i)
+            local x, y = self:_xy_for_slot(starting_i + i)
             c:release(x, y, starting_i + i, post_anim_state)
             add(self.coins, c)
         end
-        self:calc_is_complete()
-    end
-
-    function tray:xy_for_slot(i)
-        return self.x + 1, self.y - 3 + ((i - 1) * 2)
+        self:_calc_is_complete()
     end
 
     function tray:get_last_val()
@@ -119,12 +115,8 @@ function make_tray(x, y, coin_values)
         end
     end
 
-    function tray:calc_is_complete()
-        self.is_complete = all_vals_eq(self.coins)
-    end
-
     function tray:move_coins_up()
-        local x, y = self:xy_for_slot(1)
+        local x, y = self:_xy_for_slot(1)
         local old_val = self.coins[1].value
         for c in all(self.coins) do
             add(self.merging_coins, c)
@@ -137,6 +129,14 @@ function make_tray(x, y, coin_values)
             add(new_coins, make_coin(x, y, old_val + 1))
         end
         self:drop_into(new_coins, COIN_STATE.idle)
+    end
+
+    function tray:_xy_for_slot(i)
+        return self.x + 1, self.y - 3 + ((i - 1) * 2)
+    end
+
+    function tray:_calc_is_complete()
+        self.is_complete = all_vals_eq(self.coins)
     end
 
     tray:init_coins(coin_values)

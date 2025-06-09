@@ -6,16 +6,17 @@ function make_game()
         children = {}
     }
 
-    function game:init_menuitems()
+    function game:init()
         local menu_items = {
             {
                 text = "main menu",
-                callback = function() self:start_menu() end
+                callback = function() self:_start_menu() end
             }
         }
         for i, mi in ipairs(menu_items) do
             menuitem(i, mi.text, mi.callback)
         end
+        self:_start_menu()
     end
 
     function game:update()
@@ -24,7 +25,7 @@ function make_game()
             self.f_gameover = self.f
         elseif self.state == GAME_STATE.game_over_countdown then
             if self.f == (TIME.second * 2) + self.f_gameover then
-                self:start_gameover()
+                self:_start_gameover()
             end
         end
 
@@ -39,30 +40,29 @@ function make_game()
         draw_all(self.children)
     end
 
-    function game:start_menu()
+    function game:_start_menu()
         self.state = GAME_STATE.main_menu
-        local f = function() self:start_level() end
+        local f = function() self:_start_level() end
         self.children = { make_menu(f) }
     end
 
-    function game:start_level()
+    function game:_start_level()
         self.state = GAME_STATE.level
         self.children = { make_level(level1) }
     end
 
-    function game:start_gameover()
+    function game:_start_gameover()
         self.state = GAME_STATE.game_over
-        local f1 = function() self:start_menu() end
-        local f2 = function() self:start_restart() end
+        local f1 = function() self:_start_menu() end
+        local f2 = function() self:_start_restart() end
 
         add(self.children, make_popup("game over", f1, f2))
     end
 
-    function game:start_restart()
-        self:start_level()
+    function game:_start_restart()
+        self:_start_level()
     end
 
-    game:init_menuitems()
-    game:start_menu()
+    game:init()
     return game
 end

@@ -54,33 +54,60 @@ function make_popup(title, main_menu_callback, restart_callback)
         end
     end
 
-    function popup:_update_scaling()
-        -- spring animation
-        local stiffness = 0.5
-        local damping = 0.55
-        local velocity_threshold = 0.05
-        -- how slow is "slow enough"
-
-        local dw = self.t_w - self.w
-        local dh = self.t_h - self.h
-
-        self.vw = self.vw * damping + dw * stiffness
-        self.vh = self.vh * damping + dh * stiffness
-
-        self.w += self.vw
-        self.h += self.vh
-
-        local speed = sqrt(self.vw ^ 2 + self.vh ^ 2)
-
-        if speed < velocity_threshold then
-            self.w = self.t_w
-            self.h = self.t_h
-            self.vw = 0
-            self.vh = 0
-            return true
+    function popup:draw()
+        -- Shadow
+        squircle_fill(self.x + 4, self.y + 4, self.w, self.h, self.r_squircle, 0)
+        -- Border
+        squircle_fill(self.x, self.y, self.w, self.h, self.r_squircle, 2)
+        -- Body
+        squircle_fill(self.x + 1, self.y + 1, self.w - 2, self.h - 2, self.r_squircle, 15)
+        self:_draw_header()
+        self:_draw_buttons()
+        if self.pointer then
+            self.pointer:draw()
         end
+    end
 
-        return false
+    function popup:_button_down()
+        self:_get_pointed_button():press()
+    end
+
+    function popup:_button_up()
+        self:_get_pointed_button():release()
+        local type = self:_get_pointed_button().button_type
+        if type == LEVEL_CONFIG.BUTTON_TYPES.main_menu then
+            main_menu_callback()
+        elseif type == LEVEL_CONFIG.BUTTON_TYPES.restart then
+            restart_callback()
+        end
+    end
+
+    function popup:_draw_buttons()
+        local total_button_w = #self.buttons * self.buttons[1].w
+        if self.button_container.w >= total_button_w then
+            draw_all(self.buttons)
+        end
+    end
+
+    function popup:_draw_header()
+        -- Header
+        squircle_fill(self.header.x, self.header.y, self.header.w, self.header.h, self.r_squircle, 2)
+        local t_text = "\^w\^t" .. self.title
+        local text_w, _ = text_size(t_text)
+        if self.header.w >= text_w then
+            print_centered(t_text, self.header.x, self.header.y + 1, self.header.w, self.header.h, 8)
+        end
+    end
+
+    function popup:_get_pointed_button()
+        return self.buttons[self.pointer.button_i]
+    end
+
+    function popup:_move_pointer(dir)
+        local new_i = ((self.pointer.button_i - 1 + dir) % #self.buttons) + 1
+        local new_x, new_y = self.buttons[new_i]:get_pointer_xy()
+        self:_get_pointed_button():release()
+        self.pointer:move_to_button(new_i, new_x, new_y)
     end
 
     function popup:_update_positions()
@@ -109,60 +136,33 @@ function make_popup(title, main_menu_callback, restart_callback)
         end
     end
 
-    function popup:_move_pointer(dir)
-        local new_i = ((self.pointer.button_i - 1 + dir) % #self.buttons) + 1
-        local new_x, new_y = self.buttons[new_i]:get_pointer_xy()
-        self:_get_pointed_button():release()
-        self.pointer:move_to_button(new_i, new_x, new_y)
-    end
+    function popup:_update_scaling()
+        -- spring animation
+        local stiffness = 0.5
+        local damping = 0.55
+        local velocity_threshold = 0.05
+        -- how slow is "slow enough"
 
-    function popup:_button_down()
-        self:_get_pointed_button():press()
-    end
+        local dw = self.t_w - self.w
+        local dh = self.t_h - self.h
 
-    function popup:_button_up()
-        self:_get_pointed_button():release()
-        local type = self:_get_pointed_button().button_type
-        if type == LEVEL_CONFIG.BUTTON_TYPES.main_menu then
-            main_menu_callback()
-        elseif type == LEVEL_CONFIG.BUTTON_TYPES.restart then
-            restart_callback()
+        self.vw = self.vw * damping + dw * stiffness
+        self.vh = self.vh * damping + dh * stiffness
+
+        self.w += self.vw
+        self.h += self.vh
+
+        local speed = sqrt(self.vw ^ 2 + self.vh ^ 2)
+
+        if speed < velocity_threshold then
+            self.w = self.t_w
+            self.h = self.t_h
+            self.vw = 0
+            self.vh = 0
+            return true
         end
-    end
 
-    function popup:draw()
-        -- Shadow
-        squircle_fill(self.x + 4, self.y + 4, self.w, self.h, self.r_squircle, 0)
-        -- Border
-        squircle_fill(self.x, self.y, self.w, self.h, self.r_squircle, 2)
-        -- Body
-        squircle_fill(self.x + 1, self.y + 1, self.w - 2, self.h - 2, self.r_squircle, 15)
-        self:_draw_header()
-        self:_draw_buttons()
-        if self.pointer then
-            self.pointer:draw()
-        end
-    end
-
-    function popup:_draw_header()
-        -- Header
-        squircle_fill(self.header.x, self.header.y, self.header.w, self.header.h, self.r_squircle, 2)
-        local t_text = "\^w\^t" .. self.title
-        local text_w, _ = text_size(t_text)
-        if self.header.w >= text_w then
-            print_centered(t_text, self.header.x, self.header.y + 1, self.header.w, self.header.h, 8)
-        end
-    end
-
-    function popup:_draw_buttons()
-        local total_button_w = #self.buttons * self.buttons[1].w
-        if self.button_container.w >= total_button_w then
-            draw_all(self.buttons)
-        end
-    end
-
-    function popup:_get_pointed_button()
-        return self.buttons[self.pointer.button_i]
+        return false
     end
 
     popup:init()
