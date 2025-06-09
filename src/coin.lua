@@ -119,7 +119,7 @@ function make_coin(x, y, value)
         self.t = i * 4
     end
 
-    function coin:snap_xy(nx, ny)
+    function coin:set_xy(nx, ny)
         self.x = nx
         self.tx = nx
         self.y = ny

@@ -13,7 +13,7 @@ function make_tray(x, y, coin_values)
     function tray:init_coins(coin_values)
         local coins = {}
         for i, val in ipairs(coin_values) do
-            local x, y = self:_xy_for_slot(i)
+            local x, y = self:_get_xy_for_slot(i)
             local coin = make_coin(x, y, val)
             add(coins, coin)
         end
@@ -87,7 +87,7 @@ function make_tray(x, y, coin_values)
         self:_calc_is_complete()
     end
 
-    function tray:empty_slots()
+    function tray:get_n_empty_slots()
         return TRAY_CONFIG.n_slots - #self.coins
     end
 
@@ -95,7 +95,7 @@ function make_tray(x, y, coin_values)
         local starting_i = #self.coins
         for i, c in ipairs(dropped_coins) do
             -- add the data
-            local x, y = self:_xy_for_slot(starting_i + i)
+            local x, y = self:_get_xy_for_slot(starting_i + i)
             c:release(x, y, starting_i + i, post_anim_state)
             add(self.coins, c)
         end
@@ -116,7 +116,7 @@ function make_tray(x, y, coin_values)
     end
 
     function tray:move_coins_up()
-        local x, y = self:_xy_for_slot(1)
+        local x, y = self:_get_xy_for_slot(1)
         local old_val = self.coins[1].value
         for c in all(self.coins) do
             add(self.merging_coins, c)
@@ -131,7 +131,7 @@ function make_tray(x, y, coin_values)
         self:drop_into(new_coins, COIN_STATE.idle)
     end
 
-    function tray:_xy_for_slot(i)
+    function tray:_get_xy_for_slot(i)
         return self.x + 1, self.y - 3 + ((i - 1) * 2)
     end
 

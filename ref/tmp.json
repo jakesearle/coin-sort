@@ -3,7 +3,7 @@
     ],update=[function
     ],grab=[function
     ],state=1,start_hover=[function
-    ],snap_xy=[function
+    ],set_xy=[function
     ],release=[function
     ],stop_hover=[function
     ],value=4,sprite=4,base_y=48,
@@ -15,7 +15,7 @@
     ],update=[function
     ],grab=[function
     ],state=1,start_hover=[function
-    ],snap_xy=[function
+    ],set_xy=[function
     ],release=[function
     ],stop_hover=[function
     ],value=4,sprite=4,base_y=50,
@@ -27,7 +27,7 @@
     ],update=[function
     ],grab=[function
     ],post_anim_state=1,state=2,start_hover=[function
-    ],snap_xy=[function
+    ],set_xy=[function
     ],release=[function
     ],stop_hover=[function
     ],value=1,sprite=1,base_y=52,
@@ -39,7 +39,7 @@
     ],update=[function
     ],grab=[function
     ],post_anim_state=1,state=2,start_hover=[function
-    ],snap_xy=[function
+    ],set_xy=[function
     ],release=[function
     ],stop_hover=[function
     ],value=1,sprite=1,base_y=54,

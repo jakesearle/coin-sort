@@ -2,13 +2,7 @@
 
 ## TODO
 
-### Next steps
-
-### Housekeeping
-
-- [ ] Standardize getters and setters
-
-### To Complete
+### To do
 
 - [ ] (S) Reset high score menu item
 - [ ] (S) Use more coin colors
@@ -30,10 +24,11 @@
 - [ ] Tutorial
 - [ ] Brainstorm name ideas
 - [ ] Set levels
-- [ ] Power-ups?
+- [ ] Power-ups
 
 ### Done
 
+- [X] Standardize getters and setters
 - [X] Standardize public and private methods (add '_' prefix)
 - [X] Visual disable for merge button
 - [X] Don't deal the biggest coins

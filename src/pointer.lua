@@ -16,10 +16,10 @@ function make_pointer(i, j, x, y)
 
     function pointer:update()
         if not (approx_eq(self.x, self.tx) and approx_eq(self.y, self.ty)) then
-            self:_spring_animation()
+            self:_animate()
         end
         for c in all(self.held_coins) do
-            c:snap_xy(self:_grab_point())
+            c:set_xy(self:_get_grab_point())
             c:update()
         end
     end
@@ -32,7 +32,7 @@ function make_pointer(i, j, x, y)
     function pointer:grab(coins)
         self.coins_from = { self.tray_i, self.tray_j }
         self.held_coins = coins
-        local x, y = self:_grab_point()
+        local x, y = self:_get_grab_point()
         for c in all(self.held_coins) do
             c:grab(x, y)
         end
@@ -79,7 +79,7 @@ function make_pointer(i, j, x, y)
         return ret
     end
 
-    function pointer:_spring_animation()
+    function pointer:_animate()
         -- spring animation
         local stiffness = 0.2
         local damping = 0.6
@@ -99,7 +99,7 @@ function make_pointer(i, j, x, y)
         assert(self.tray_i == nil or self.button_i == nil, "Both pointer i variables are set")
     end
 
-    function pointer:_grab_point()
+    function pointer:_get_grab_point()
         return self.x, self.y + 4
     end
 
